@@ -37,7 +37,6 @@ label_mappings = {col: dict(zip(le.classes_, range(len(le.classes_)))) for col, 
 #all five do the same thing for a different input... anything else failed to go through the def . Assigning the inputs to a function(features) and making one def for all with a "for col in features" didnt work  
 def brand_encoded(user_input):
     try:
-        # Find the encoded value
         encoded_value = label_encoders['CarBrand'].transform([user_input])[0]
         print(f"Encoded Value for '{user_input}': {encoded_value}")
         return encoded_value
@@ -46,7 +45,6 @@ def brand_encoded(user_input):
         return None
 def name_encoded(user_input):
     try:
-        # Find the encoded value
         encoded_value = label_encoders['CarName'].transform([user_input])[0]
         print(f"Encoded Value for '{user_input}': {encoded_value}")
         return encoded_value
@@ -55,7 +53,6 @@ def name_encoded(user_input):
         return None
 def fuel_encoded(user_input):
     try:
-        # Find the encoded value
         encoded_value = label_encoders['fueltype'].transform([user_input])[0]
         print(f"Encoded Value for '{user_input}': {encoded_value}")
         return encoded_value
@@ -64,7 +61,6 @@ def fuel_encoded(user_input):
         return None
 def body_encoded(user_input):
     try:
-        # Find the encoded value
         encoded_value = label_encoders['carbody'].transform([user_input])[0]
         print(f"Encoded Value for '{user_input}': {encoded_value}")
         return encoded_value
@@ -74,7 +70,6 @@ def body_encoded(user_input):
 def cylinder_encoded(user_input):
     
     try:
-        # Find the encoded value
         encoded_value = label_encoders['cylindernumber'].transform([user_input])[0]
         print(f"Encoded Value for '{user_input}': {encoded_value}")
         return encoded_value
