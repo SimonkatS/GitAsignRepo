@@ -6,7 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import root_mean_squared_error, r2_score
- 
+
+#Simon Katsaliakis 2122258
 # original from kaggle before changes https://www.kaggle.com/datasets/goyalshalini93/car-data
 #csv used :   https://github.com/SimonkatS/GitAsignRepo changed the CarName column to CarBrand and CarName
 # Would have done GUI but had personal deadline for Friday so went for the easier option CLI 
