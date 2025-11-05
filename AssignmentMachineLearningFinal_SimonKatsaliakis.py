@@ -12,9 +12,9 @@ from sklearn.metrics import root_mean_squared_error, r2_score
 #csv used :   https://github.com/SimonkatS/GitAsignRepo changed the CarName column to CarBrand and CarName
 # Would have done GUI but had personal deadline for Friday so went for the easier option CLI 
 
-data_path = r'Ypoligistikh_Noim/GitAsignRepo/CarDataset_Assignment.csv'#document paths xriazodai r gia na min einai invalid syntax 
+data_path = r'Ypoligistikh_Noim/GitAsignRepo/CarDataset_Assignment.csv'#document paths xriazodai r gia na min einai invalid syntax ##this is wrong, you have to fork the repo to laptop for it to work, better to just make it a static place.
 #copy to relative path tou katevasmenou arxeiou (wtf)
-
+# GOT A 9 LETS GO, didnt impliment the machine learning in some part i dont remember, wasnt to important.
 try: 
     car_data = pd.read_csv(data_path)
     
@@ -167,7 +167,7 @@ def user_interface(car_data):   #  The User Interface :) CLI
                 fuel = input("give a fuel-type : ").lower()
                 body = input("give a body type : ").lower()
                 cylinders = input("give a number of cylinders : ").lower()
-                #         Encoding by matching the existing encoding of the csv ,     The most complicated thing in the assignment , debugging and finding fixes was very anoying 
+                #         Encoding by matching the existing encoding of the csv ,     The most complicated thing in the assignment , debugging and finding fixes was very annoying 
                 brand_enc = brand_encoded(brand)
                 carname_enc = name_encoded(carname)
                 fuel_enc = fuel_encoded(fuel)
