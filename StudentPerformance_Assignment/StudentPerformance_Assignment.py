@@ -7,4 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import root_mean_squared_error, r2_score
 
-## change here testing the branching
+
+data_path = r"Python\MachineLearningRepo\StudentPerformance_Assignment\student_performance.csv"
+df = pd.read_csv(data_path)
+df.head()
