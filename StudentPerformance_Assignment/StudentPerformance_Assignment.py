@@ -8,6 +8,5 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import root_mean_squared_error, r2_score
 
 
-data_path = r"Python/MachineLearningRepo/StudentPerformance_Assignment/student_performance.csv"
-df = pd.read_csv(data_path)
+df = pd.read_csv("C:\Users\simon\Desktop\Code File\Python\MachineLearningRepo\StudentPerformance_Assignment\student_performance.csv")
 df.head()
