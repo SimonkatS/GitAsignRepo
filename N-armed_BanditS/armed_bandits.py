@@ -176,19 +176,25 @@ TOTAL_STEPS = 1000  # Number of "energies" or plays (P)
 EPSILON = 0.1       # Epsilon for e-greedy
 TAU = 0.1           # Temperature for softmax
 
-# --- NEW: Define custom reward ranges for each machine [ (min_mean, max_mean) ] ---
+# --- Define custom reward ranges for each machine [ (min_mean, max_mean) ] ---
 # This is a list with M_MACHINES elements.
-# Let's make machine 2 clearly the best and machine 4 clearly the worst.
 custom_ranges = [
-    (10, 20),   # Machine 0: All arms will have a true mean between 10 and 20
-    (5, 15),    # Machine 1: True means between 5 and 15
-    (50, 70),   # Machine 2: Clearly the BEST. True means between 50 and 70
-    (25, 35),   # Machine 3: True means between 25 and 35
-    (-10, 0)    # Machine 4: A "bad" machine. True means between -10 and 0
+    (10, 20),   
+    (5, 15),    
+    (50, 70),   
+    (25, 35),   
+    (-10, 0)    
 ]
 
+print(f"Creating a {M_MACHINES}x{N_ARMS} bandit problem.")
 # --- Initialize Environment and Agents ---
-env = BanditEnvironment(M_MACHINES, N_ARMS)
+
+# env = BanditEnvironment(M_MACHINES, N_ARMS)                                 ---INTERCHANGE THESE 2 LINES IF YOU DONT/DO WANT CUSTOM RANGES---
+env = BanditEnvironment(M_MACHINES, N_ARMS, machine_ranges=custom_ranges)
+
+print(f"\nTrue reward landscape (mean values):")
+print(np.round(env.true_rewards, 2))
+
 e_greedy_agent = EpsilonGreedyAgent(M_MACHINES, N_ARMS, EPSILON)
 softmax_agent = SoftmaxAgent(M_MACHINES, N_ARMS, TAU)
 
@@ -211,9 +217,11 @@ for step in range(TOTAL_STEPS):
     # 4. Store reward
     e_greedy_rewards.append(reward)
 
+
+# NOTE: We re-use the *same* environment so the agents face the exact same problem, making it a fair comparison.
+
+
 # --- Run Softmax Simulation ---
-# NOTE: We re-use the *same* environment so the agents face
-# the exact same problem, making it a fair comparison.
 print("Running Softmax Agent...")
 for step in range(TOTAL_STEPS):
     # 1. Agent chooses action
@@ -235,8 +243,7 @@ print("\n--- Simulation Complete ---")
 true_best_flat_index = np.argmax(env.true_rewards)
 true_best_machine, true_best_arm = np.unravel_index(true_best_flat_index, (M_MACHINES, N_ARMS))
 true_best_reward = env.true_rewards[true_best_machine, true_best_arm]
-print(f"\nTrue reward landscape (mean values):")
-print(np.round(env.true_rewards, 2))
+
 
 print(f"True best action: Machine {true_best_machine}, Arm {true_best_arm} (True Mean Reward: {true_best_reward:.4f})")
 
@@ -258,7 +265,7 @@ softmax_machine, softmax_arm = np.unravel_index(softmax_best_flat_index, (M_MACH
 print(f"Softmax found: Machine {softmax_machine}, Arm {softmax_arm} (Estimated Reward: {softmax_agent.q_table[softmax_machine, softmax_arm]:.4f})")
 
 
-# --- Plotting (Optional but Recommended) ---
+# --- Plotting ---
 # Calculate moving average to see learning trend
 def moving_average(rewards, window=100):
     return np.convolve(rewards, np.ones(window)/window, mode='valid')
