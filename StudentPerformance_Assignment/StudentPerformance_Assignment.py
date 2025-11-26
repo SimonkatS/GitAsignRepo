@@ -7,7 +7,16 @@ from sklearn.preprocessing import StandardScaler
 
 
 # TO READ PROPERLY HAVE: -FOLDER BEFORE r"...\" OPEN IN VSCODE -HAVE THE SAME FOLDER/FILE NAMES IF YOU RUN ON DIFFERENT DEVICE
-dataset = pd.read_csv(r"StudentPerformance_Assignment\student_performance.csv")
+try:
+    dataset = pd.read_csv("student_performance.csv")
+except FileNotFoundError:
+    # Fallback
+    try:
+        dataset = pd.read_csv(r"StudentPerformance_Assignment\student_performance.csv")
+    except FileNotFoundError:
+        print("Error: File not found. Please make sure 'student_performance.csv' is in the same folder.")
+        exit()
+dataset = dataset.sample(n=50000, random_state=42)
 # print(dataset.describe())  # helps to see some data from the csv
 features = ["weekly_self_study_hours", "attendance_percentage", "class_participation", "total_score"]
 X = dataset[features]  ## droping 'grade' because its not numerical

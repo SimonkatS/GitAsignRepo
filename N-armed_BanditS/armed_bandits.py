@@ -189,8 +189,8 @@ custom_ranges = [
 print(f"Creating a {M_MACHINES}x{N_ARMS} bandit problem.")
 # --- Initialize Environment and Agents ---
 
-# env = BanditEnvironment(M_MACHINES, N_ARMS)                                 ---INTERCHANGE THESE 2 LINES IF YOU DONT/DO WANT CUSTOM RANGES---
-env = BanditEnvironment(M_MACHINES, N_ARMS, machine_ranges=custom_ranges)
+env = BanditEnvironment(M_MACHINES, N_ARMS)                                # ---INTERCHANGE THESE 2 LINES IF YOU DONT/DO WANT CUSTOM RANGES---
+# env = BanditEnvironment(M_MACHINES, N_ARMS, machine_ranges=custom_ranges)
 
 print(f"\nTrue reward landscape (mean values):")
 print(np.round(env.true_rewards, 2))
