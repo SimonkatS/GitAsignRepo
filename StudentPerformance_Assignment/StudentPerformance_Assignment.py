@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans 
 from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import NearestNeighbors
 
 
 # TO READ PROPERLY HAVE: -FOLDER BEFORE r"...\" OPEN IN VSCODE -HAVE THE SAME FOLDER/FILE NAMES IF YOU RUN ON DIFFERENT DEVICE
@@ -20,7 +21,7 @@ dataset = dataset.sample(n=50000, random_state=42)
 # print(dataset.describe())  # helps to see some data from the csv
 features = ["weekly_self_study_hours", "attendance_percentage", "class_participation", "total_score"]
 X = dataset[features]  ## droping 'grade' because its not numerical
-scaler = StandardScaler()  #scaling so all the features are thought about equally
+scaler = StandardScaler()  #normalizing
 X_scaled = scaler.fit_transform(X)
 
 
@@ -55,14 +56,61 @@ print("Model training complete.")
 
 # Display statistical summary
 print("\n--- Statistical Summary for Each Cluster ---")
-print(dataset.groupby('Cluster')[features].describe().T)
+print(dataset.groupby('Cluster')[features].describe().T.round(2))
 
-# Display graphical summary (Boxplots)
-print("\nGenerating boxplots for each feature by cluster...")
-for feature in features:
-    plt.figure(figsize=(8, 6))
-    sns.boxplot(data=dataset, x='Cluster', y=feature, palette='Set2')
-    plt.title(f'{feature} Distribution by Cluster')
-    plt.show()
+print("\nGenerating Pairplot... (This shows relationships between all variables)")
+sns.pairplot(dataset, hue='Cluster', vars=features, palette='bright', diag_kind='kde')
+plt.show()
 
+# CLUSTER VISUALIZATION
+print("\nGenerating Pairplot... (This shows relationships between all variables)")
+# 'hue' colors the dots by Cluster
+# 'vars' ensures we only plot the relevant columns
+# 'diag_kind' makes the diagonal graphs smooth curves instead of bars
+sns.pairplot(dataset, hue='Cluster', vars=features, palette='bright', diag_kind='kde')
+plt.show()
+
+
+# NEAREST NEIGHBORS
+nn_model = NearestNeighbors(n_neighbors=4, algorithm='auto')
+nn_model.fit(X_scaled)
+
+# NEW STUDENT ENTRY LOOP 
+print("\n" + "="*40)
+print("NEW STUDENT DATA ENTRY")
+print("="*40)
+while True:
+    user_choice = input("\nDo you want to enter a new student? (y/n): ").lower()
+    if user_choice != 'y':
+        break
+
+    try:
+        print("Enter student details:")
+        f1 = float(input(f" - {features[0]}: "))
+        f2 = float(input(f" - {features[1]}: "))
+        f3 = float(input(f" - {features[2]}: "))
+        f4 = float(input(f" - {features[3]}: "))
+
+        # Prepare the data
+        new_data = np.array([[f1, f2, f3, f4]])
+        # Scale it using the existing scaler
+        new_data_scaled = scaler.transform(new_data)
+
+        # Predict Cluster
+        predicted_cluster = kmean.predict(new_data_scaled)[0]
+        print(f"\n---> This student belongs to Group (Cluster): {predicted_cluster}")
+
+        # Find Neighbors
+        distances, indices = nn_model.kneighbors(new_data_scaled)
+        
+        print(f"---> The 3 most similar students in the database are:")
+        similar_students = dataset.iloc[indices[0]]
+        print(similar_students[features + ['Cluster']])
+
+    except ValueError:
+        print("Invalid input! Please enter numbers only.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+print("Exiting program.")
 
